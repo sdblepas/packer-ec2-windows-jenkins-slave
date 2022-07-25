@@ -46,7 +46,7 @@ source "amazon-ebs" "windows-build" {
     Name = "packer-windows-build"
   }
   user_data_file = "../windows/userdata_win_build.txt"
-  winrm_password = "SuperS3cr3t!!!!"
+  winrm_password = "<Your PASSWD>"
   winrm_username = "Administrator"
 }
 build {
