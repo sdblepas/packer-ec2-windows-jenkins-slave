@@ -17,6 +17,8 @@ you must add the Subnet too
 
 ![image](https://user-images.githubusercontent.com/6726241/180746790-d217f6dd-70c7-44ab-a23f-d403f6ab8aa7.png)
 
+# In Code 
+replace "<Your PASSWD>" with your password in the hcl and the txt file
 
 
 
