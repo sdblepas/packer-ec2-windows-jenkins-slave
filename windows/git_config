@@ -1,0 +1,3 @@
+Host <YOUR HOST>
+HostName <YOUR HOST>
+IdentityFile C:\Users\Administrator\.ssh\gitlab_jenkins_2021
