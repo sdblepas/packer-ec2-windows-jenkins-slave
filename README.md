@@ -21,5 +21,7 @@ you must add the Subnet too
 # In Code 
 replace "<Your PASSWD>" with your password in the hcl and the txt file
 
+add <YOUR HOST> to the git_config if needed and then comment out the section in the hcl
+
 
 
