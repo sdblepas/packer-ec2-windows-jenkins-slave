@@ -6,6 +6,14 @@ packer {
     }
   }
 }
+/* To store the private key for git
+data "amazon-parameterstore" "jenkins-key" {
+  name = "gitlab_jenkins_2021"
+  with_decryption = true
+  region = "eu-west-1"
+  profile = "mgmt"
+}
+*/
 
 variable "profile" {
   type = string
@@ -35,7 +43,7 @@ source "amazon-ebs" "windows-build" {
     owners      = ["amazon"]
     most_recent = true
   }
-  ami_block_device_mappings {
+  launch_block_device_mappings {
     volume_type = "gp3"
     device_name = "/dev/sda1"
     delete_on_termination = true
@@ -46,7 +54,7 @@ source "amazon-ebs" "windows-build" {
     Name = "packer-windows-build"
   }
   user_data_file = "../windows/userdata_win_build.txt"
-  winrm_password = "<Your PASSWD>"
+  winrm_password = "SuperS3cr3t!!!!"
   winrm_username = "Administrator"
 }
 build {
@@ -67,11 +75,22 @@ build {
       "./InitializeInstance.ps1 -SchedulePerBoot"
     ]
   }
-  provisioner "windows-restart" {}
-  provisioner "powershell" {
-    script = "../windows/Enable_smb.ps1"
+  provisioner "windows-restart" {
+    restart_timeout = "30m"
+    pause_before = "2m"
+
   }
+/*  You can add here the private key for Git and the git config
+  provisioner "file" {
+    content = data.amazon-parameterstore.jenkins-key.value
+    destination = "C:\\Users\\Administrator\\.ssh\\gitlab_jenkins_2021"
+  }
+  provisioner "file" {
+    source = "../windows/git_config"
+    destination = "C:\\Users\\Administrator\\.ssh\\config"
+  }
+*/
   provisioner "powershell" {
-    script = "../windows/chocolatey-install.ps1"
+    scripts = ["../windows/Enable_smb.ps1", "../windows/chocolatey-install.ps1", "../windows/docker_install.ps1"]
   }
 }
